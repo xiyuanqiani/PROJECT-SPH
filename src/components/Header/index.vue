@@ -63,11 +63,14 @@ export default {
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
 
       // 传参的第三种方式，对象形式
-      this.$router.push({
-        name:'search',
-        params:{keyword:this.keyword},
-        query:{k:this.keyword.toUpperCase()}
-      })
+
+      //判断 如果带有query参数，带着传过去
+      if(this.$route.query){
+        let location = {name:'search',params:{keyword:this.keyword || undefined},}
+        location.query = this.$route.query
+        this.$router.push(location)
+
+      }
     }
   },
 };

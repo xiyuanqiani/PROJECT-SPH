@@ -8,7 +8,8 @@ Vue.component('TypeNav',TypeNav)
 
 Vue.config.productionTip = false
 
-
+// 引入mock数据
+import '@/mock/mockServe'
 
 import router from './router/index'
 new Vue({

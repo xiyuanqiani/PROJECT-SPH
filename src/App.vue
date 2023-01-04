@@ -7,13 +7,15 @@
 </template>
 
 <script>
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 export default {
-  components:{Header,Footer}
-}
+  components: { Header, Footer },
+  mounted() {
+    // 组件挂载完毕，只发送一次发送请求（优化）
+    this.$store.dispatch("categoryList");
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
