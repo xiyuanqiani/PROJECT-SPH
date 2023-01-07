@@ -1,8 +1,10 @@
-import {reqCategoryList,reqGetBannerList} from '@/api'
+import {reqCategoryList,reqGetBannerList,reqGetFloor} from '@/api'
 const state = {
     categoryList:[],
     // 轮播图数据
     bannerList:[],
+    // 楼层数据
+    floorList:[],
 }
 const mutations = {
     CATEGORYLIST(state,categoryList){
@@ -10,6 +12,9 @@ const mutations = {
     },
     GETBANNERLIST(state,bannerList){
         state.bannerList = bannerList
+    },
+    GETFLOOR(state,floorList){
+        state.floorList = floorList
     }
 }
 const actions = {
@@ -25,6 +30,12 @@ const actions = {
         let result = await reqGetBannerList()
         if(result.code == 200){
             commit('GETBANNERLIST',result.data)
+        }
+    },
+    async getFloor({commit}){
+        let result = await reqGetFloor()
+        if(result.code == 200){
+            commit('GETFLOOR',result.data)
         }
     }
 }

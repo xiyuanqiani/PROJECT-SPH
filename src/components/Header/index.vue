@@ -73,6 +73,12 @@ export default {
       }
     }
   },
+  // 通过全局事件总线，将关键字清除
+  mounted() {
+    this.$bus.$on("clear",()=>{
+      this.keyword = ''
+    })
+  },
 };
 </script>
 

@@ -3,28 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :list="bannerList"/>
       </div>
       <div class="right">
         <div class="news">
@@ -100,18 +79,54 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
+// 引入swiper6,注意引入方式！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+// import Swiper from "swiper/swiper-bundle.min.js";
 export default {
-  mounted(){
+  mounted() {
     // 派发actions，通过vuex发送请求，将数据存储在仓库中
     // 注意路径
-    this.$store.dispatch('getBannerList')
+    this.$store.dispatch("getBannerList");
+
+    // 在new swiper实例前，页面中的结构必须有，，把new Swiper放在这里面不行
+    // 因为dispatch中涉及到异步语句，导致v-for遍历的时候结构还没完全
   },
-  computed:{
+  computed: {
     ...mapState({
-      bannerList:state=> state.Home.bannerList
-    })
-  }
+      bannerList: (state) => state.Home.bannerList,
+    }),
+  },
+  // watch:{
+  //   bannerList:{
+  //     immediate:true,
+  //     handler(newValue,oldValue){
+  //       /* 
+  //       如果执行handler后，代表实例身上已经有了属性【数组】
+  //       当前这个函数执行，只能保证数据有了，但是结构还没完全，无法保证v-for执行完毕
+  //       利用nextTick
+  //       */
+  //      this.$nextTick(()=>{
+  //       // 当执行这个回调，服务器数据已得到，v-for已完毕
+  //       var mySwiper = new Swiper(this.$refs.mySwiper, {
+  //       autoplay:true,//自动循环播放
+  //       loop: true, // 循环模式选项
+
+  //       // 如果需要分页器
+  //       pagination: {
+  //         el: ".swiper-pagination",
+  //         clickable: true,
+  //       },
+
+  //       // 如果需要前进后退按钮
+  //       navigation: {
+  //         nextEl: ".swiper-button-next",
+  //         prevEl: ".swiper-button-prev",
+  //       },
+  //     });
+  //      })
+  //     }
+  //   }
+  // }
 };
 </script>
 
