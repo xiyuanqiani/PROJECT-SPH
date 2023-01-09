@@ -92,6 +92,10 @@ export default {
   },
   // 组件挂载完毕，向服务器发送请求
   mounted() {
+      // 判断是哪个组件
+    if (this.$route.path != "/home") {
+        this.show = false;
+      }
   },
   computed: {
     ...mapState({
@@ -110,7 +114,6 @@ export default {
     }, 50),
     leaveIndex() {
       this.originIndex = -1;
-      // 判断是哪个组件
       if (this.$route.path != "/home") {
         this.show = false;
       }

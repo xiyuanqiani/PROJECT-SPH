@@ -2,12 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import TypeNav from './components/TypeNav'
 import Carousel from './components/Carousel'
+import Pagination from './components/Pagination'
 import store from './store'
 
 // 注册TypeNav为全局组件
 Vue.component('TypeNav',TypeNav)
 //注册Carousel为全局组件
 Vue.component(Carousel.name,Carousel)
+Vue.component(Pagination.name,Pagination)
+
 
 Vue.config.productionTip = false
 

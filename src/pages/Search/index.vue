@@ -38,23 +38,11 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOne}" @click="changeOrder('1')">
+                  <a >综合<i v-show="isOne" class="iconfont" :class="{'icon-jiantou_xiangxia':isDown,'icon-jiantou_xiangshang':isUp}"></i></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}" @click="changeOrder('2')">
+                  <a >价格<i v-show="isTwo" class="iconfont" :class="{'icon-jiantou_xiangxia':isDown,'icon-jiantou_xiangshang':isUp}"></i></a>
                 </li>
               </ul>
             </div>
@@ -68,9 +56,9 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank">
+                    <router-link :to="`/detail/${goods.id}`">
                       <img :src="goods.defaultImg" />
-                    </a>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -104,35 +92,8 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!-- 分页器  pageNo当前页数，pageSize每页显示几个，total总共多少，continues中间连续显示-->
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -140,7 +101,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters,mapState } from "vuex";
 import SearchSelector from "./SearchSelector/SearchSelector";
 export default {
   name: "Search",
@@ -152,8 +113,8 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        // 排序
-        order: "",
+        // 排序，默认是综合|降序
+        order: "1:desc",
         // 当前第几页
         pageNo: 1,
         // 每页展示多少个数据
@@ -179,6 +140,22 @@ export default {
   computed: {
     // getters计算没有划分模块（Home，Search）
     ...mapGetters(["goodsList"]),
+    isOne(){
+      return this.searchParams.order.indexOf('1') != -1
+    },
+    isTwo(){
+      return this.searchParams.order.indexOf('2') != -1
+    },
+    isDown(){
+      return this.searchParams.order.indexOf('desc') !=- 1
+    },
+    isUp(){
+      return this.searchParams.order.indexOf('asc') != -1
+    },
+    // 总共多少数据
+    ...mapState({
+      total:state=>state.Search.searchList.total
+    })
   },
   methods: {
     getData() {
@@ -230,6 +207,26 @@ export default {
     },
     removeAttr(index){
       this.searchParams.props.splice(index,1)
+      this.getData()
+    },
+    // 排序函数
+    changeOrder(flag){
+      // flag是标记，代表的是用户点击的是1综合，2价格
+      let originFlag = this.searchParams.order.split(':')[0]
+      let originSort = this.searchParams.order.split(':')[1]
+      // 准备一个新order
+      let newOrder = ""
+      if(flag == originFlag){
+        // 代表用户第一次一定点击的是综合
+        newOrder = `${originFlag}:${originSort == 'desc'?'asc':'desc'}`
+      }else{
+        newOrder = `${flag}:${'desc'}`
+      }
+      this.searchParams.order = newOrder
+      this.getData()
+    },
+    getPageNo(pageNo){
+      this.searchParams.pageNo = pageNo
       this.getData()
     }
   },

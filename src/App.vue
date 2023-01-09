@@ -12,7 +12,7 @@ import Footer from "./components/Footer";
 export default {
   components: { Header, Footer },
   mounted() {
-    // 组件挂载完毕，只发送一次发送请求（优化）
+    // 组件挂载完毕，只发送一次发送请求(TypeNav)（优化）
     this.$store.dispatch("categoryList");
   },
 };
