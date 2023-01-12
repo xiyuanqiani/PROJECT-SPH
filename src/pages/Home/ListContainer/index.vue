@@ -201,7 +201,8 @@ export default {
           width: 25%;
 
           .list-item {
-            background-image: url(./images/icons.png);
+            // css中使用@加~
+            background-image: url(~@/assets/images/icons.png);
             width: 61px;
             height: 40px;
             display: block;

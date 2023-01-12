@@ -5,6 +5,7 @@ import nprogress from 'nprogress'
 // 引入nprogress样式
 import "nprogress/nprogress.css"
 
+
 // axios实例
 const requests = axios.create({
     baseURL:'/mock',
@@ -14,6 +15,7 @@ const requests = axios.create({
 
 // 请求拦截器
 requests.interceptors.request.use((config) => {
+    
     nprogress.start()
     return config
 })

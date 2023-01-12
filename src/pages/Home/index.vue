@@ -31,6 +31,8 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getFloor')
+    // 获取用户信息在home显示
+    this.$store.dispatch('userInfo')
   },
   computed:{
     ...mapState({     

@@ -4,6 +4,8 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 // 引入nprogress样式
 import "nprogress/nprogress.css"
+// 引入store
+import store from '@/store'
 
 // axios实例
 const requests = axios.create({
@@ -14,6 +16,14 @@ const requests = axios.create({
 
 // 请求拦截器
 requests.interceptors.request.use((config) => {
+    if(store.state.Detail.uuid_token){
+        // 请求头添加一个字段（userTempId）后台给的
+        config.headers.userTempId = store.state.Detail.uuid_token
+    }
+    // 需要带token给服务器
+    if(store.state.User.token){
+        config.headers.token = store.state.User.token
+    }
     nprogress.start()
     return config
 })
