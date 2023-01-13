@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import routes from './routes'
+import store from '@/store'
 
 
 // 编程式导航路由跳转到当前路由(参数不变), 多次执行会抛出NavigationDuplicated的警告错误?
@@ -28,7 +29,7 @@ VueRouter.prototype.replace = function(location,resolve,reject){
     }
 }
 
-export default new VueRouter({
+let router = new VueRouter({
     routes,
     // 滚动行为
     scrollBehavior (to, from, savedPosition) {
@@ -36,3 +37,39 @@ export default new VueRouter({
         return { x: 0, y: 0 }
       }
 })
+
+// 全局前置守卫
+router.beforeEach(async(to,from,next)=>{
+    let token = store.state.User.token
+    let loginName = store.state.User.userInfo.loginName
+    // 用户已经登录
+    if(token){
+        // 用户已经登录且想去Login，不准去且停留在首页
+        if(to.path=='/login'){
+            next('/home')
+        }
+        // 用户已经登录去非Login页面
+        else{
+            // 有用户名
+            if(loginName){
+                next()
+            }
+            //没有用户名，就派发actions
+            else{
+                try {
+                  await  store.dispatch('userInfo')
+                    next()
+                } catch (error) {
+                    // token过期,重新登录
+                   await store.dispatch('userLogout')
+                    next('/login')
+                }
+            }
+        }
+    }else{
+        // 没有登录
+        next()
+    }
+})
+
+export default router
