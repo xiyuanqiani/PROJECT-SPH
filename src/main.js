@@ -21,11 +21,16 @@ import '@/mock/mockServe'
 //引入swiper样式
 import 'swiper/swiper-bundle.min.css'
 
+// 引入element-ui
+import { MessageBox } from 'element-ui';
+
 import router from './router/index'
 new Vue({
   beforeCreate(){
       Vue.prototype.$bus = this
       Vue.prototype.$API = API
+      Vue.prototype.$msgbox = MessageBox;
+      Vue.prototype.$alert = MessageBox.alert;
   },
   render: h => h(App),
   router,
