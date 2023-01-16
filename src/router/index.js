@@ -67,8 +67,15 @@ router.beforeEach(async(to,from,next)=>{
             }
         }
     }else{
-        // 没有登录
-        next()
+        // 没有登录不能去交易支付个人中心,点击应去到登录
+        let topath = to.path
+        if(topath.indexOf('/trade')!=-1 ||topath.indexOf('/pay')!=-1 ||topath.indexOf('/center')!=-1){
+            // 把未登录的时候未去成的地方的路由存储到地址栏中
+            next('/login?redirect='+topath)
+        }else{
+            next()
+        }
+        
     }
 })
 

@@ -11,13 +11,13 @@
             <router-link to="/register" class="register">免费注册</router-link>
           </p>
           <p v-else>
-            <a >{{userName}}</a>
-            <a  class="register" @click="logout">退出登录</a>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
+          <router-link to="/center">我的订单</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
@@ -42,7 +42,11 @@
             class="input-error input-xxlarge"
             v-model="keyword"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="goSearch"
+          >
             搜索
           </button>
         </form>
@@ -53,13 +57,13 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      keyword:''
-    }
+      keyword: "",
+    };
   },
   methods: {
-    goSearch(){
+    goSearch() {
       // 传参第一种形式字符串
       // this.$router.push('/search/'+this.keyword+'?k='+this.keyword.toUpperCase())
 
@@ -69,34 +73,36 @@ export default {
       // 传参的第三种方式，对象形式
 
       //判断 如果带有query参数，带着传过去
-      if(this.$route.query){
-        let location = {name:'search',params:{keyword:this.keyword || undefined},}
-        location.query = this.$route.query
-        this.$router.push(location)
-
+      if (this.$route.query) {
+        let location = {
+          name: "search",
+          params: { keyword: this.keyword || undefined },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
       }
     },
     // 退出登录
-    async logout(){
-       try {
-        await this.$store.dispatch('userLogout')
-        this.$router.push('/home')
-       } catch (error) {
-        alert(error.message)
-       }
-    }
+    async logout() {
+      try {
+        await this.$store.dispatch("userLogout");
+        this.$router.push("/home");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   // 通过全局事件总线，将关键字清除
   mounted() {
-    this.$bus.$on("clear",()=>{
-      this.keyword = ''
-    })
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
   },
-  computed:{
-    userName(){
-      return this.$store.state.User.userInfo.loginName
-    }
-  }
+  computed: {
+    userName() {
+      return this.$store.state.User.userInfo.loginName;
+    },
+  },
 };
 </script>
 

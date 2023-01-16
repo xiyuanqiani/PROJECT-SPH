@@ -25,6 +25,16 @@ import 'swiper/swiper-bundle.min.css'
 import { MessageBox } from 'element-ui';
 
 import router from './router/index'
+
+// 引入懒加载的图片
+import hyrz from '@/assets/R.gif'
+// 图片懒加载
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload,{
+  // 懒加载默认图片
+  loading: hyrz
+})
+
 new Vue({
   beforeCreate(){
       Vue.prototype.$bus = this
